@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="150.0" maxWidth="400" minHeight="-Infinity" minWidth="-Infinity" prefHeight="147.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="74.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0" prefWidth="222.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.0" minWidth="10.0" prefWidth="71.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.0" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <TextField fx:id="txtID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="txtAge" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label alignment="TOP_RIGHT" prefHeight="17.0" prefWidth="28.0" text="ID" GridPane.rowIndex="1" />
+        <Label alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="38.0" text="Name" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="42.0" text="Age" GridPane.rowIndex="3" />
+        <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="17.0" prefWidth="39.0" text="Email" GridPane.rowIndex="4" />
+        <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#pressCancel" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#pressSave" prefHeight="25.0" prefWidth="53.0" text="Save" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <Label fx:id="lblError" textFill="#ee0606" GridPane.columnIndex="1" />
+    </children>
+</GridPane>

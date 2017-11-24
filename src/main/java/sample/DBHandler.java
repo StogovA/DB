@@ -1,3 +1,5 @@
+package sample;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,19 @@ public class DBHandler {
         }
     }
 
+    public static boolean checkID(int id) {
+        ResultSet set = null;
+        int count = 0;
+        try {
+            set = statement.executeQuery("SELECT COUNT(*) from users WHERE id = " + id);
+            set.next();
+            count = set.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count == 0;
+    }
+
     public static ResultSet getResultSet() {
         return resultSet;
     }
@@ -38,7 +53,7 @@ public class DBHandler {
         return null;
     }
 
-    public static ResultSet getFullBase() {
+    private static ResultSet getFullBase() {
         try {
             resultSet = statement.executeQuery("SELECT * from users");
         } catch (SQLException e) {
@@ -72,21 +87,20 @@ public class DBHandler {
         return namesColumn;
     }
 
-    public static List<Row> getRows() {
-        int count = getColumnCount();
-        List<Row> rows = new ArrayList<Row>();
+    public static List<Person> getPersons() {
+        List<Person> personList = new ArrayList<Person>();
+        if (resultSet == null) {
+            resultSet = getFullBase();
+        }
         try {
             resultSet.beforeFirst();
             while (resultSet.next()) {
-                List<String> row = new ArrayList<String>();
-                for (int i = 0; i < count; i++) {
-                    row.add(resultSet.getString(i + 1));
-                }
-                rows.add(new Row(row));
+                personList.add(new Person(resultSet.getString(1), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rows;
+        return personList;
     }
 }
