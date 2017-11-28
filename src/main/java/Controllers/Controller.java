@@ -2,12 +2,14 @@ package Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -28,6 +30,16 @@ import java.util.ResourceBundle;
  * Created by Даги on 09.11.2017.
  */
 public class Controller implements Initializable {
+    private final String EDIT_PATH = "/fxml/EditPerson.fxml";
+    private final String REMOVE_PATH = "/fxml/DeletePerson.fxml";
+    private final String ADD = "Add Person";
+    private final String EDIT = "Edit Person";
+    private final String REMOVE = "Remove Person";
+
+    static ObservableList<Person> observableList;
+    static Person workPerson;
+    static int workPersonID = -1;
+
     @FXML
     public TableView myTableView;
     @FXML
@@ -38,10 +50,12 @@ public class Controller implements Initializable {
     public TableColumn colAge;
     @FXML
     public TableColumn colEmail;
-
-    public static ObservableList<Person> observableList;
-    public static Person workPerson;
-    public static int workPersonInt;
+    @FXML
+    public Button btnEdit;
+    @FXML
+    public Button btnDelete;
+    @FXML
+    public Button btnAdd;
 
     public void initialize(URL location, ResourceBundle resources) {
         myTableView.setRowFactory(new Callback<TableView, TableRow>() {
@@ -53,8 +67,8 @@ public class Controller implements Initializable {
                     public void handle(MouseEvent event) {
                         if (event.getClickCount() == 2 && (!row.isEmpty())) {
                             workPerson = row.getItem();
-                            workPersonInt = row.getIndex();
-                            startEdit();
+                            workPersonID = row.getIndex();
+                            startWindow(EDIT, EDIT_PATH, 400, 150);
                         }
                     }
                 });
@@ -64,6 +78,7 @@ public class Controller implements Initializable {
         observableList = FXCollections.observableArrayList(DBHandler.getPersons());
         myTableView.setEditable(true);
         colID.setText("ID");
+        colID.setEditable(false);
         colID.setCellValueFactory(new PropertyValueFactory<Person, String>("id"));
         colName.setText("Name");
         colName.setCellValueFactory(new PropertyValueFactory<Person, String>("name"));
@@ -75,19 +90,40 @@ public class Controller implements Initializable {
     }
 
 
-    private void startEdit() {
+    private void startWindow(String actionType, String path, int width, int height) {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("/fxml/EditPerson.fxml"));
+            root = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stage.setTitle("Edit Person");
-        stage.setScene(new Scene(root, 400, 150));
+        stage.setTitle(actionType);
+        stage.setScene(new Scene(root, width, height));
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(Main.stage);
         stage.show();
+    }
+
+    public void pressEdit(ActionEvent actionEvent) {
+        initWorkPerson();
+        startWindow(EDIT, EDIT_PATH, 400, 150);
+    }
+
+    public void pressDelete(ActionEvent actionEvent) {
+        initWorkPerson();
+        startWindow(REMOVE, REMOVE_PATH, 400, 200);
+    }
+
+    public void pressAdd(ActionEvent actionEvent) {
+        workPersonID = -1;
+        workPerson = null;
+        startWindow(ADD, EDIT_PATH, 400, 150);
+    }
+
+    private void initWorkPerson() {
+        workPersonID = myTableView.getSelectionModel().getFocusedIndex();
+        workPerson = observableList.get(workPersonID);
     }
 }

@@ -27,21 +27,53 @@ public class DBHandler {
         }
     }
 
-    public static boolean checkID(int id) {
-        ResultSet set = null;
-        int count = 0;
+    public static void updatePerson(Person updatedPerson) {
         try {
-            set = statement.executeQuery("SELECT COUNT(*) from users WHERE id = " + id);
-            set.next();
-            count = set.getInt(1);
+            PreparedStatement ps = connection.prepareStatement("UPDATE users " +
+                    "SET Name = ?,Age = ?,Email = ? WHERE id = " + updatedPerson.getId());
+            ps.setString(1, updatedPerson.getName());
+            ps.setString(2, updatedPerson.getAge());
+            ps.setString(3, updatedPerson.getEmail());
+            ps.executeUpdate();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count == 0;
     }
 
-    public static ResultSet getResultSet() {
-        return resultSet;
+    public static void removePerson(String id) {
+        try {
+            statement.executeUpdate("delete from users where id = " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addPerson(Person person) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("insert into users (Name,Age,Email)" +
+                    "values (?,?,?)");
+            ps.setString(1, person.getName());
+            ps.setString(2, person.getAge());
+            ps.setString(3, person.getEmail());
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getNextID() {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT AUTO_INCREMENT FROM information_schema.tables" +
+                    " WHERE table_name = 'users' AND table_schema = DATABASE()");
+            rs.next();
+            return rs.getString(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static Connection getConnection() {

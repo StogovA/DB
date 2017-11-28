@@ -16,16 +16,8 @@ public class Main extends Application {
         stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Start.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 600, 275));
+        primaryStage.setScene(new Scene(root, 500, 250));
         primaryStage.show();
-
-//        Group root = new Group();
-//        Scene scene = new Scene(root, 600, 300, Color.BEIGE);
-//        primaryStage.setScene(scene);
-//        myTableView = new TablePerson(sample.DBHandler.getPersons()).getTablePerson();
-//        System.out.println(myTableView.getColumns().get(1));
-//        root.getChildren().add(myTableView);
-//        primaryStage.show();
     }
 
     public static void main(String[] args) {
